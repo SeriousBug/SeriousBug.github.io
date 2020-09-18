@@ -65,7 +65,7 @@ above the university mean for classes of similar size.
 
 # Activities
 
-[OOPSLA 2020](https://2020.splashcon.org/track/splash-2020-Artifacts) Artifact Committee member
+[OOPSLA 2020](https://2020.splashcon.org/track/splash-2020-Artifacts) Artifact Evaluation Committee member
 
 
 

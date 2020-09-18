@@ -8,6 +8,7 @@
    [:head
     [:meta {:charset "utf-8"}]
     [:link {:rel "stylesheet" :href "main.css"}]]
+    [:title "Homepage of Kaan Genç"]
    [:link {:href
            "https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap"
            :rel "stylesheet"}]
