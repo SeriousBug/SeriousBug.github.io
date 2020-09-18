@@ -21,6 +21,7 @@
       [:div.affiliation "The Ohio State University"]
       [:span [:a.email {:href "mailto:genc.5@osu.edu"} "genc.5@osu.edu"] [:a.gpg {:href "/extra/kaangenc.gpg"} "GPG key"]]
       [:a.github {:href "https://github.com/SeriousBug"} "Github"]
-      [:a.researchr {:href "https://conf.researchr.org/profile/kaangenc"} "Researchr"]])
+      [:a.researchr {:href "https://conf.researchr.org/profile/kaangenc"} "Researchr"]
+      [:a.cv {:href "/extra/cv.pdf"} "CV"]])
    [:div.main.column
     (-> data :entry :content)]))
