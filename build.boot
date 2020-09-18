@@ -27,7 +27,7 @@
 (deftask dev []
   (comp (watch)
         (build)
-        (serve :port 8000 :resource-root "public")))
+        (serve :port 8000 :resource-root "")))
 
 (deftask publish []
   (comp (build)
