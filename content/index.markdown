@@ -34,7 +34,7 @@ performance and scalability impacts.
 <div class="authors">Jake Roemer, Kaan Genç, and Michael D. Bond</div>
 <div class="conf">ACM SIGPLAN Conference on Programming Language Design and Implementation <a href="https://pldi20.sigplan.org/home">(PLDI 2020)</a>, Online, June 2020 </div>
 
-[Paper](http://web.cse.ohio-state.edu/~bond.213/vindicator-pldi-2018.pdf) [Extended Paper](http://web.cse.ohio-state.edu/~bond.213/vindicator-pldi-2018-xtr.pdf)
+[Paper](http://web.cse.ohio-state.edu/~mikebond/smarttrack-pldi-2020.pdf) [Extended Paper](https://arxiv.org/pdf/1905.00494.pdf)
 </div>
 
 
