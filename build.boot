@@ -2,28 +2,33 @@
  :source-paths #{"src"}
  :resource-paths #{"content"}
  :dependencies '[[perun "0.4.3-SNAPSHOT" :scope "test"]
-                 [deraen/boot-livereload "0.2.1" :scope "test"]
                  [hiccup "1.0.5" :exclusions [org.clojure/clojure]]
                  [garden "1.3.10"]
+                 [org.martinklepsch/boot-garden "1.3.2-0"]
                  [pandeiro/boot-http "0.8.3" :exclusions [org.clojure/clojure]]])
 
 (require '[io.perun :as perun]
-         '[deraen.boot-livereload :refer [livereload]]
          '[pandeiro.boot-http :refer [serve]]
+         '[org.martinklepsch.boot-garden :refer [garden]]
          '[site.core])
 
-(deftask build-website []
-  (comp (perun/markdown)
+(deftask build []
+  (comp (perun/pandoc)
+        (perun/highlight)
+        (sift :to-resource #{#"^img/(.*)"})
+        (sift :move {#"^img/(.*)" "public/img/$1"})
+        (sift :to-resource #{#"^extra/(.*)"})
+        (sift :move {#"^extra/(.*)" "public/extra/$1"})
+        (garden :styles-var 'site.styles/base :output-to "public/main.css")
         (perun/render :renderer 'site.core/page)
-        (perun/sitemap :filename "sitemap.xml")))
+        (perun/sitemap :filename "sitemap.xml")
+        (sift :move {#"^public/(.*)" "$1"})))
 
-(deftask serve-website []
-  (comp (livereload)
-        (build-website)
-        (serve :port 8000 :resource-root "public")
-;        (repl)
-        (wait)))
+(deftask dev []
+  (comp (watch)
+        (build)
+        (serve :port 8000 :resource-root "public")))
 
-(deftask compile-website []
-  (comp (build-website)
-        (target)))
+(deftask publish []
+  (comp (build)
+        (target :dir #{"docs"})))
