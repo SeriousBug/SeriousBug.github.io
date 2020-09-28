@@ -19,7 +19,7 @@
         (sift :move {#"^img/(.*)" "public/img/$1"})
         (sift :to-resource #{#"^extra/(.*)"})
         (sift :move {#"^extra/(.*)" "public/extra/$1"})
-        (garden :styles-var 'site.styles/base :output-to "public/main.css")
+        (garden :styles-var 'site.styles/base :output-to "main.css")
         (perun/render :renderer 'site.core/page)
         (perun/sitemap :filename "sitemap.xml")
         (sift :move {#"^public/(.*)" "$1"})))

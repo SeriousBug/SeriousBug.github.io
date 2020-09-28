@@ -76,5 +76,5 @@ above the university mean for classes of similar size.
 ![A picture from a 3-D video game, showing a river flowing into the sea. The text "The Land Itself" is overlayed on the sea.](/img/game-cover.jpg)\
 </a>
 
-On my free time, I develop small indie video games and release them open source.
+In my free time, I develop small indie video games and release them open source.
 </div>

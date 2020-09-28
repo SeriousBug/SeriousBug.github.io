@@ -11,7 +11,7 @@
   ["h1:not(:first-child)" {:margin-top "2em"}]
   [:h2 {:font-size "1.3em"}]
   [:h3 {:font-size "1.15em"}]
-  ["img, .img" {:border-radius "5px"}]
+  ["img, .img" {:border-radius "5px" :max-width "100%"}]
   [:.sidebar
    {:max-width "300px"}
    [">a,span" {:display "block" :padding "10px 0"}]
