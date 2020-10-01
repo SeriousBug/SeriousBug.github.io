@@ -13,16 +13,23 @@
          '[site.core])
 
 (deftask build []
-  (comp (perun/pandoc)
-        (perun/highlight)
+  (comp (perun/draft)
+        (perun/pandoc :cmd-opts ["-f" "markdown" "-t" "html5"])
         (sift :to-resource #{#"^img/(.*)"})
-        (sift :move {#"^img/(.*)" "public/img/$1"})
         (sift :to-resource #{#"^extra/(.*)"})
-        (sift :move {#"^extra/(.*)" "public/extra/$1"})
         (garden :styles-var 'site.styles/base :output-to "main.css")
+        (perun/ttr)  ;; Time to read
+        (perun/word-count)
         (perun/render :renderer 'site.core/page)
+        (perun/permalink :filterer (fn [p] (not= (:slug p) "index")))
+        (perun/collection :renderer 'site.core/page-blog
+                          :filterer (fn [p] (:title p)) ; don't list anything without a title
+                          :sortby :date
+                          :page "blog/index.html" :out-dir "")
         (perun/sitemap :filename "sitemap.xml")
-        (sift :move {#"^public/(.*)" "$1"})))
+        (sift :move {#"^public/(.*)" "$1"}))) ; perun/render ignores out-dir for some reason
+        
+
 
 (deftask dev []
   (comp (watch)

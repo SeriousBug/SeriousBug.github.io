@@ -27,12 +27,12 @@ the date of the lesson. Sure, glancing at the date to the corner of my
 screen and writing it down takes just a few seconds, but why not write
 a command to do it for me? Here is what I came up with:
 
-```commonlisp
+~~~commonlisp
 (defun insert-current-date ()
   "Insert the current date in YYYY-MM-DD format."
   (interactive)
   (shell-command "date +'%Y-%m-%d'" t))
-```
+~~~
 
 Now that was easy and convenient. And being able to write my first
 piece of Elisp so easily was really fun, so I decided to tackle

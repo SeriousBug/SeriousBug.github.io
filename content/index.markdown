@@ -16,7 +16,7 @@ performance and scalability impacts.
 <div class="authors">Kaan Genç, Michael D. Bond, and Guoqing Harry Xu</div>
 <div class="conf">ACM SIGPLAN Conference on Programming Language Design and Implementation <a href="https://pldi20.sigplan.org/home">(PLDI 2020)</a>, Online, June 2020</div>
 
-[Talk](https://www.youtube.com/watch?v=wdVLlQXV1to) [Paper](https://dl.acm.org/doi/10.1145/3385412.3385991) [Extended Paper](https://arxiv.org/pdf/2004.00262.pdf) [Implementation](https://github.com/PLaSSticity/Crafty)
+[Talk](https://www.youtube.com/watch?v=wdVLlQXV1to) [Paper](https://dl.acm.org/doi/10.1145/3385412.3385991) [Extended Paper](https://arxiv.org/pdf/2004.00262.pdf) [Implementation](https://github.com/PLaSSticity/Crafty) [Poster](/extra/Crafty Poster.pdf)
 </div>
 
 
@@ -25,7 +25,7 @@ performance and scalability impacts.
 <div class="authors">Kaan Genç, Jake Roemer, Yufan Xu, and Michael D. Bond</div>
 <div class="conf">ACM SIGPLAN International Conference on Object-Oriented Programming, Systems, Languages, and Applications <a href="https://2019.splashcon.org/track/splash-2019-oopsla">(OOPSLA 2019)</a>, Athens, Greece, October 2019</div> 
 
-[Talk](https://www.youtube.com/watch?v=YgZWnc31tVQ) [Paper](https://dl.acm.org/doi/10.1145/3360605) [Extended Paper](https://arxiv.org/pdf/1904.13088.pdf) [Implementation](https://github.com/PLaSSticity/SDP-WDP-implementation)
+[Talk](https://www.youtube.com/watch?v=YgZWnc31tVQ) [Paper](https://dl.acm.org/doi/10.1145/3360605) [Extended Paper](https://arxiv.org/pdf/1904.13088.pdf) [Implementation](https://github.com/PLaSSticity/SDP-WDP-implementation) [Poster](/extra/DepAware Poster.pdf)
 </div>
 
 

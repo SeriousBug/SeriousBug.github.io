@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link href="/main.css" rel="stylesheet"><link href="/extra/emacs.css" rel="stylesheet"><title>Emacs as an operating system - Homepage of Kaan Genç</title><link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"></head><div class="sidebar column"><a class="home" href="/">Home</a><img alt="A photo of Kaan Genç, after his OOPSLA 2019 talk." class="picture" src="/img/profile.jpg"><div class="name">Kaan Genç</div><div class="title">PhD Student</div><div class="department">Computer Science & Engineering</div><div class="affiliation">The Ohio State University</div><span><a class="email" href="mailto:genc.5@osu.edu">genc.5@osu.edu</a><a class="gpg" href="/extra/kaangenc.gpg">GPG key</a></span><a class="github" href="https://github.com/SeriousBug">Github</a><a class="github" href="https://twitter.com/KaanGencCS">Twitter</a><a class="researchr" href="https://conf.researchr.org/profile/kaangenc">Researchr</a><a class="cv" href="/extra/cv.pdf">CV</a><a class="blog" href="/blog/">Blog</a></div><div class="main column"><h1 class="post-title">Emacs as an operating system</h1><div class="date">Written at Apr 13, 2016</div><div class="modified">Last edited at May 28, 2016</div><div class="ttr">1353 words, takes about 8 minutes to read</div><p>Emacs is sometimes jokingly called a good operating system with a bad text editor. Over the last year, I found myself using more and more of Emacs, so I decided to try out how much of an operating system it is. Of course, operating system here is referring to the programs that the user interacts with, although I would love to try out some sort of Emacs-based kernel.</p>
+<!--more-->
+<h1 id="emacs-as-a-terminal-emulator-multiplexer">Emacs as a terminal emulator / multiplexer</h1>
+<p>Terminals are all about text, and Emacs is all about text as well. Not only that, but Emacs is also very good at running other processes and interacting with them. It is no surprise, I think, that Emacs works well as a terminal emulator.</p>
+<p>Emacs comes out of the box with <code>shell</code> and <code>term</code>. Both of these commands run the shell of your choice, and give you a buffer to interact with it. Shell gives you a more emacs-y experience, while term overrides all default keymaps to give you a full terminal experience.</p>
+<figure>
+<img src="/img/emacs-terminal.png" alt="Emacs as a terminal emulator" /><figcaption aria-hidden="true">Emacs as a terminal emulator</figcaption>
+</figure>
+<p>To use emacs as a full terminal, you can bind these to a key in your window manager. I’m using i3, and my keybinding looks like this:</p>
+<pre><code>bindsym $mod+Shift+Return exec --no-startup-id emacs --eval &quot;(shell)&quot;</code></pre>
+<p>You can also create a desktop file to have a symbol to run this on a desktop environment. Try putting the following text in a file at <code>~/.local/share/applications/emacs-terminal.desktop</code>:</p>
+<pre><code>[Desktop Entry]
+Name=Emacs Terminal
+GenericName=Terminal Emulator
+Comment=Emacs as a terminal emulator.
+Exec=emacs --eval &#39;(shell)&#39;
+Icon=emacs
+Type=Application
+Terminal=false
+StartupWMClass=Emacs</code></pre>
+<p>If you want to use term instead, replace <code>(shell)</code> above with <code>(term "/usr/bin/bash")</code>.</p>
+<p>A very useful feature of terminal multiplexers is the ability to leave the shell running, even after the terminal is closed, or the ssh connection has dropped if you are connection over that. Emacs can also achieve this with it’s server-client mode. To use that, start emacs with <code>emacs --daemon</code>, and then create a terminal by running <code>emacsclient -c --eval '(shell)'</code>. Even after you close emacsclient, since Emacs itself is still running, you can run the same command again to get back to your shell.</p>
+<p>One caveat is that if there is a terminal/shell already running, Emacs will automatically open that whenever you try opening a new one. This can be a problem if you are using Emacs in server-client mode, or want to have multiple terminals in the same window. In that case, you can either do <code>M-x rename-uniquely</code> to change the name of the existing terminal, which will make Emacs create a new one next time, or you can add that to hook in your <code>init.el</code> to always have that behaviour:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode lisp"><code class="sourceCode commonlisp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>(add-hook &#39;shell-mode-hook &#39;rename-uniquely)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(add-hook &#39;term-mode-hook &#39;rename-uniquely)</span></code></pre></div>
+<h1 id="emacs-as-a-shell">Emacs as a shell</h1>
+<p>Of course, it is not enough that Emacs works as a terminal emulator. Why not use Emacs as a shell directly, instead of bash/zsh? Emacs has you covered for that too. You can use eshell, which is a shell implementation, completely written in Emacs Lisp. All you need to do is press <code>M-x eshell</code>.</p>
+<figure>
+<img src="/img/eshell.png" alt="Eshell, Emacs shell" /><figcaption aria-hidden="true">Eshell, Emacs shell</figcaption>
+</figure>
+<p>The upside is that eshell can evaluate and expand lisp expressions, as well as redirecting the output to Emacs buffers. The downside is however, eshell is not feature complete. It lacks some features such as input redirection, and the documentation notes that it is inefficient at piping output between programs.</p>
+<p>If you want to use eshell instead of shell or term, you can replace <code>shell</code> in the examples of terminal emulator section with <code>eshell</code>.</p>
+<h1 id="emacs-as-a-mail-cilent">Emacs as a mail cilent</h1>
+<p><a href="http://www.catb.org/~esr/jargon/html/Z/Zawinskis-Law.html">Zawinski’s Law</a>: Every program attempts to expand until it can read mail. Of course, it would be disappointing for Emacs to not handle mail as well.</p>
+<p>Emacs already ships with some mail capability. To get a full experience however, I’d recommend using <a href="http://www.djcbsoftware.nl/code/mu/mu4e.html">mu4e</a> (mu for emacs). I have personally set up <a href="http://www.offlineimap.org/">OfflineIMAP</a> to retrieve my emails, and mu4e gives me a nice interface on top of that.</p>
+<figure>
+<img src="/img/mu4e.png" alt="mu4e, mail client" /><figcaption aria-hidden="true">mu4e, mail client</figcaption>
+</figure>
+<p>I’m not going to talk about the configurations of these programs, I’d recommend checking out their documentations. Before ending this section, I also want to mention <a href="https://github.com/iqbalansari/mu4e-alert">mu4e-alert</a> though.</p>
+<h1 id="emacs-as-a-feed-reader-rssatom">Emacs as a feed reader (RSS/Atom)</h1>
+<p>Emacs handles feeds very well too. The packages I’m using here are <a href="https://github.com/skeeto/elfeed">Elfeed</a> and <a href="https://github.com/algernon/elfeed-goodies">Elfeed goodies</a>. Emacs can even show images in the feeds, so it covers everything I need from a feed reader.</p>
+<figure>
+<img src="/img/elfeed.png" alt="Elfeed, feed reader" /><figcaption aria-hidden="true">Elfeed, feed reader</figcaption>
+</figure>
+<h1 id="emacs-as-a-file-manager">Emacs as a file manager</h1>
+<p>Why use a different program to manage your files when you can use Emacs? Emacs ships with dired, as well as image-dired. This gives you a file browser, with optional image thumbnail support.</p>
+<h1 id="emacs-as-a-document-viewer">Emacs as a document viewer</h1>
+<p>Want to read a pdf? Need a program to do a presentation? Again, Emacs.</p>
+<figure>
+<img src="/img/docview.png" alt="Docview, document viewer" /><figcaption aria-hidden="true">Docview, document viewer</figcaption>
+</figure>
+<p>Emacs comes with <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Document-View.html">DocView</a> which has support for PDF, OpenDocument and Microsoft Office files. It works surprisingly well.</p>
+<p>Also, <a href="https://github.com/politza/pdf-tools">PDF Tools</a> brings even more PDF viewing capabilities to Emacs, including annotations, text search and outline. After installing PDF Tools, Emacs has become my primary choice for reading PDF files.</p>
+<h1 id="emacs-as-a-browser">Emacs as a browser</h1>
+<p>Emacs comes out of box with <a href="https://www.gnu.org/software/emacs/manual/html_node/eww/index.html#Top">eww</a>, a text-based web browser with support for images as well.</p>
+<figure>
+<img src="/img/eww.png" alt="eww, browser" /><figcaption aria-hidden="true">eww, browser</figcaption>
+</figure>
+<p>Honestly, I don’t think I’ll be using Emacs to browse the web. But still, it is nice that the functionality is there.</p>
+<h1 id="emacs-as-a-music-player">Emacs as a music player</h1>
+<p>Emacs can also act as a music player thanks to <a href="https://www.gnu.org/software/emms/">EMMS</a>, Emacs MultiMedia System. If you are wondering, it doesn’t play the music by itself but instead uses other players like vlc or mpd.</p>
+<p>It has support for playlists, and can show thumbnails as well. For the music types, it supports whatever the players it uses support, which means that you can basically use file type.</p>
+<h1 id="emacs-as-a-irc-client">Emacs as a IRC client</h1>
+<p>I don’t use IRC a lot, but Emacs comes out of the box with support for that as well thanks to <a href="https://www.emacswiki.org/emacs?action=browse;oldid=EmacsIrcClient;id=ERC">ERC</a>.</p>
+<figure>
+<img src="/img/erc.png" alt="erc, Emacs IRC client" /><figcaption aria-hidden="true">erc, Emacs IRC client</figcaption>
+</figure>
+<h1 id="emacs-as-a-text-editor">Emacs as a text editor</h1>
+<p>Finally, Emacs also can work well as a text editor.</p>
+<p>Emacs is a pretty fine text editor out of the box, but I want to mention some packages here.</p>
+<p>First, <a href="https://github.com/magnars/multiple-cursors.el">multiple cursors</a>. Multiple cursors mode allows you to edit text at multiple places at the same time.</p>
+<p>I also want to mention <a href="http://www.dr-qubit.org/emacs.php#undo-tree">undo-tree</a>. It acts like a mini revision control system, allowing you to undo and redo without ever losing any text.</p>
+<p>Another great mode is <a href="https://github.com/doitian/iy-go-to-char">iy-go-to-char</a>. It allows you to quickly jump around by going to next/previous occurrances of a character. It is very useful when you are trying to move around a line.</p>
+<p><a href="https://github.com/winterTTr/ace-jump-mode/">Ace Jump Mode</a> allows you to jump around the visible buffers. It can jump around based on initial characters of words, or jump to specific lines. It can also jump from one buffer to another, which is very useful when you have several buffers open in your screen.</p>
+<figure>
+<img src="/img/ace-jump-mode.png" alt="Ace Jump Mode" /><figcaption aria-hidden="true">Ace Jump Mode</figcaption>
+</figure>
+<p>Finally, I want to mention <a href="https://github.com/Wilfred/ag.el">ag.el</a>, which is an Emacs frontend for the silver searcher. If you don’t know about ag, it is a replacement for grep that recursively searches directories, and has some special handling for projects, and is very fast.</p>
+<h1 id="emacs-as-an-ide">Emacs as an IDE</h1>
+<p>People sometimes compare Emacs to IDE’s and complain that a text editor such as Emacs doesn’t have enough features. What they are forgetting, of course, is that Emacs is an operating system, and we can have an IDE in it as well.</p>
+<p>There are different packages for every language, so I’ll be only speaking on language agnostic ones.</p>
+<p>For interacting with git, <a href="http://magit.vc/">magit</a> is a wonderful interface.</p>
+<figure>
+<img src="/img/magit.png" alt="Magit, Git Porcelain" /><figcaption aria-hidden="true">Magit, Git Porcelain</figcaption>
+</figure>
+<p>For auto-completion, <a href="https://company-mode.github.io/">Company mode</a> works wonders. I rely heavily on completion while writing code, and company mode has support for anything I tried writing.</p>
+<p>If you like having your code checked as you type, <a href="https://www.flycheck.org/">flycheck</a> has you covered. It has support for many tools and languages.</p>
+<figure>
+<img src="/img/company-flycheck.png" alt="Company Mode and Flycheck" /><figcaption aria-hidden="true">Company Mode and Flycheck</figcaption>
+</figure>
+</div></html>
