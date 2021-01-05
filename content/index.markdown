@@ -63,10 +63,13 @@ The students were satisfied with my teaching, with my Student Evaluation of
 Instruction mean scores being 4.6 and 4.4 out of 5 for both semesters, a score
 above the university mean for classes of similar size.
 
+I am currently teaching this class again for the Spring 2021 semester.
+
 # Activities
 
 [OOPSLA 2020](https://2020.splashcon.org/track/splash-2020-Artifacts) Artifact Evaluation Committee member
 
+[ASPLOS 2021](https://asplos-conference.org/2021/) Artifact Evaluation Committee member
 
 
 <div class="other-stuff">
