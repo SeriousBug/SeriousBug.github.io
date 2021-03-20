@@ -17,6 +17,7 @@
         (perun/pandoc :cmd-opts ["-f" "markdown" "-t" "html5"])
         (sift :to-resource #{#"^img/(.*)"})
         (sift :to-resource #{#"^extra/(.*)"})
+        (sift :to-resource #{#"^CNAME"})
         (garden :styles-var 'site.styles/base :output-to "main.css")
         (perun/ttr)  ;; Time to read
         (perun/word-count)
