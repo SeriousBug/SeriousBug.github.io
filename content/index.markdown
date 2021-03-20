@@ -1,13 +1,91 @@
-# Research Interests
+I'm a 4th year Computer Science PhD student at the Ohio State University. Over
+the duration of my PhD, I have been researching topics in Programming Languages
+such as data race detection, and transactional persistent memory. Research that
+I led or assisted resulted in several publications, which are listed below. I
+also had the opportunity to teach the course Advanced C Programming, and serve
+on the Artifact Evaluation Committees of several conferences.
 
-My research interests include programming languages, persistent memory (NVM),
-dynamic program analysis, and data race detection.
+Outside the school, I build web and mobile applications for fun. Over the years
+I have learned and used many programming languages and technologies, including
+JavaScript, TypeScript, React, React Native, Python, Java, C, C++, Clojure, and
+Haskell. All my projects are open source, and are available on my [Github
+page](https://github.com/SeriousBug).
 
-I am currently working on novel methods for providing efficient persistent
-transactions with strong guarantees. Our work uses non-volatile memory, such as
-Intel Optane Memory, combined with commodity hardware transactional memory to
-allow programs to survive power interruptions and crashes, with minimal
-performance and scalability impacts.
+I am an avid Linux user, having been using it full time for the last 7 years. I
+manage several small personal servers, and have experience with Bash scripting,
+writing SystemD services, and building and using Docker containers.
+
+
+# Highlighted Projects
+
+
+<div> <div class="publication">
+## image-survey
+
+A web application to run surveys where users compare 2 images to pick the one
+they prefer. Uses a Python backend utilizing asyncio capabilities with the Sanic
+web server and SQLite. The front end is a React app, written in JavaScript and
+Material-UI.
+
+[Github](https://github.com/SeriousBug/image-survey) [Demo](https://imagesurvey.kaangenc.me/)
+</div>
+
+
+<div class="publication">
+## WorkTime
+
+Work-in-progress offline-first mobile app for productivity and time management.
+Uses React Native with TypeScript, and a PouchDB database on the client side.
+Currently planning to add a backend supported by CouchDB to provide
+synchronization capabilities.
+
+[Github](https://github.com/SeriousBug/WorkTime)
+</div>
+
+
+<div class="publication">
+## Crafty
+
+A transactional persistent memory library, written in C. Provides transactional
+data storage capabilities to programs by utilizing existing hardware
+transactional memory support of processors, combined with the new non-volatile
+memory hardware. Allows programs to store and access data efficiently, and
+without the need for additional concurrency synchronization. This is the
+corresponding implementation for one of my publications listed below.
+
+[Github](https://github.com/PLaSSticity/Crafty)
+</div>
+
+<div class="publication">
+## Crafty
+
+A transactional persistent memory library, written in C. Provides transactional
+data storage capabilities to programs by utilizing existing hardware
+transactional memory support of processors, combined with the new non-volatile
+memory hardware. Allows programs to store and access data efficiently, and
+without the need for additional concurrency synchronization. This is the
+corresponding implementation for the publication of the same name listed below.
+
+[Github](https://github.com/PLaSSticity/Crafty)
+</div>
+
+
+<div class="publication">
+## SDP & WDP data race detectors
+
+Data race detection for Java programs using predictive dynamic data race
+analyses. Predictive race analysis looks at a single execution of a program to
+detect races that may occur in many other executions. Our analyses use data and
+control flow dependence to find more data races compared to other analyses. This
+is the corresponding implementation for my publication "Dependence Aware,
+Unbounded Sound Predictive Race Detection".
+
+[Github](https://github.com/PLaSSticity/SDP-WDP-implementation)
+</div>
+
+</div>
+
+
 
 # Publications
 
@@ -21,7 +99,7 @@ performance and scalability impacts.
 
 
 <div class="publication">
-## Dependence Aware, Predictive Unbounded Predictive Race Detection
+## Dependence Aware, Unbounded Sound Predictive Race Detection
 <div class="authors">Kaan Genç, Jake Roemer, Yufan Xu, and Michael D. Bond</div>
 <div class="conf">ACM SIGPLAN International Conference on Object-Oriented Programming, Systems, Languages, and Applications <a href="https://2019.splashcon.org/track/splash-2019-oopsla">(OOPSLA 2019)</a>, Athens, Greece, October 2019</div> 
 
@@ -47,29 +125,13 @@ performance and scalability impacts.
 </div>
 </div>
 
-# Teaching Experience
-
-During Autumn 2017 and Spring 2018 semesters, I had the opportunity to teach the
-class [CSE
-2451](http://coe-portal.cse.ohio-state.edu/pdf-exports/CSE/CSE-2451.pdf),
-Advanced C Programming, at the Ohio State Univerity. The class had around 35
-students enrolled for both semesters. I was given the full responsibilities for
-the class, including teaching the class, writing assignments and exams, grading,
-and holding office hours. I revised the course material I was given, making it
-more comprehensive and adding unique insights on building and optimizing
-advanced C programs.
-
-The students were satisfied with my teaching, with my Student Evaluation of
-Instruction mean scores being 4.6 and 4.4 out of 5 for both semesters, a score
-above the university mean for classes of similar size.
-
-I am currently teaching this class again for the Spring 2021 semester.
-
 # Activities
 
-[OOPSLA 2020](https://2020.splashcon.org/track/splash-2020-Artifacts) Artifact Evaluation Committee member
+[PLDI 2021](https://pldi21.sigplan.org/track/pldi-2021-PLDI-Research-Artifacts) Artifact Evaluation Committee member
 
 [ASPLOS 2021](https://asplos-conference.org/2021/) Artifact Evaluation Committee member
+
+[OOPSLA 2020](https://2020.splashcon.org/track/splash-2020-Artifacts) Artifact Evaluation Committee member
 
 
 <div class="other-stuff">

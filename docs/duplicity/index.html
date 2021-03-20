@@ -1,44 +1,44 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><link href="/main.css" rel="stylesheet"><link href="/extra/emacs.css" rel="stylesheet"><title>Taking Backups with Duplicity - Homepage of Kaan Genç</title><link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"></head><div class="sidebar column"><a class="home" href="/">Home</a><img alt="A photo of Kaan Genç, after his OOPSLA 2019 talk." class="picture" src="/img/profile.jpg"><div class="name">Kaan Genç</div><div class="title">PhD Student</div><div class="department">Computer Science & Engineering</div><div class="affiliation">The Ohio State University</div><span><a class="email" href="mailto:genc.5@osu.edu">genc.5@osu.edu</a><a class="gpg" href="/extra/kaangenc.gpg">GPG key</a></span><a class="github" href="https://github.com/SeriousBug">Github</a><a class="github" href="https://twitter.com/KaanGencCS">Twitter</a><a class="researchr" href="https://conf.researchr.org/profile/kaangenc">Researchr</a><a class="cv" href="/extra/cv.pdf">CV</a><a class="blog" href="/blog/">Blog</a></div><div class="main column"><h1 class="post-title">Taking Backups with Duplicity</h1><div class="date">Written at May 15, 2015</div><div class="ttr">329 words, takes about 4 minutes to read</div><p>I wanted to start taking backups for some time, but I haven’t had the time to do any research and set everything up. After reading another <a href="https://www.reddit.com/r/linuxmasterrace/comments/35ljcq/couple_of_days_ago_i_did_rm_rf_in_my_home/">horror story that was saved by backups</a>, I decided to start taking some backups.</p>
+<html><head><meta charset="utf-8"><link href="/main.css" rel="stylesheet"><link href="/extra/emacs.css" rel="stylesheet"><title>Taking Backups with Duplicity - Homepage of Kaan Genç</title><link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&amp;family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"></head><div class="sidebar column"><a class="home" href="/">Home</a><img alt="A photo of Kaan Genç, after his OOPSLA 2019 talk." class="picture" src="/img/profile.jpg"><div class="name">Kaan Genç</div><div class="title">PhD Student</div><div class="department">Computer Science & Engineering</div><div class="affiliation">The Ohio State University</div><span><a class="email" href="mailto:genc.5@osu.edu">genc.5@osu.edu</a><a class="gpg" href="/extra/kaangenc.gpg">GPG key</a></span><a class="github" href="https://github.com/SeriousBug">Github</a><a class="linkedin" href="https://www.linkedin.com/in/kaan-genc-8489b9205/">LinkedIn</a><a class="cv" href="/extra/cv.pdf">CV</a><a class="blog" href="/blog/">Blog</a><a class="twitter" href="https://twitter.com/KaanGencCS">Twitter</a><a class="researchr" href="https://conf.researchr.org/profile/kaangenc">Researchr</a></div><div class="main column"><h1 class="post-title">Taking Backups with Duplicity</h1><div class="date">Written at May 15, 2015</div><div class="ttr">329 words, takes about 4 minutes to read</div><p>I wanted to start taking backups for some time, but I haven’t had the time to do any research and set everything up. After reading another <a href="https://www.reddit.com/r/linuxmasterrace/comments/35ljcq/couple_of_days_ago_i_did_rm_rf_in_my_home/">horror story that was saved by backups</a>, I decided to start taking some backups.</p>
 <!--more-->
 <p>After doing some research on backup options, I decided on <a href="http://duplicity.nongnu.org/">duplicity</a>. The backups are compressed, encrypted and incremental, both saving space and ensuring security. It supports both local and ssh files(as well as many other protocols), so it has everything I need.</p>
 <p>I first took a backup into my external hard drive, then VPS. The main problem I encountered was that duplicity uses <a href="https://github.com/paramiko/paramiko">paramiko</a> for ssh, but it wasn’t able to negotiate a key exchange algorithm with my VPS. Luckily, duplicity also supports <a href="http://pexpect.sourceforge.net/pexpect.html">pexpect</a>, which uses OpenSSH. If you encounter the same problem, you just need to tell duplicity to use pexpect backend by prepending your url with <code>pexpect+</code>, like <code>pexpect+ssh://example.com</code>.</p>
 <p>Duplicity doesn’t seem to have any sort of configuration files of itself, so I ended up writing a small bash script to serve as a sort of configuration, and also keep me from running duplicity with wrong args. I kept forgetting to add an extra slash to <code>file://</code>, causing duplicity to backup my home directory into my home directory! :D</p>
 <p>If anyone is interested, here’s the script:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">if [[</span> <span class="va">$(</span><span class="fu">id</span> -u<span class="va">)</span> <span class="ot">!=</span> <span class="st">&quot;0&quot;</span><span class="kw"> ]]</span>; <span class="kw">then</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>    <span class="bu">read</span> -p <span class="st">&quot;Backup should be run as root! Continue? [y/N]&quot;</span> <span class="va">yn</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>    <span class="kw">case</span> <span class="va">$yn</span><span class="kw"> in</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>        [Yy]*<span class="kw">)</span> <span class="bu">break</span><span class="kw">;;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>        <span class="ex">*</span>) <span class="bu">exit</span><span class="kw">;;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>    <span class="kw">esac</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="kw">fi</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="kw">if [[</span> <span class="va">$1</span> <span class="ot">=</span> file://*<span class="kw"> ]]</span>; <span class="kw">then</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>    <span class="bu">echo</span> <span class="st">&quot;Doing local backup.&quot;</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>    <span class="va">ARGS=</span><span class="st">&quot;--no-encryption&quot;</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a>    <span class="kw">if [[</span> <span class="va">$1</span> <span class="ot">=</span> file:///*<span class="kw"> ]]</span>; <span class="kw">then</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a>        <span class="va">URL=$1</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a>    <span class="kw">else</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a>        <span class="bu">echo</span> <span class="st">&quot;Use absolute paths for backup.&quot;</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a>        <span class="bu">exit</span> 1</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a>    <span class="kw">fi</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a><span class="kw">elif [[</span> <span class="va">$1</span> <span class="ot">=</span> scp*<span class="kw"> ]]</span>; <span class="kw">then</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a>    <span class="bu">echo</span> <span class="st">&quot;Doing SSH backup.&quot;</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a>    <span class="va">ARGS=</span><span class="st">&quot;--ssh-askpass&quot;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a>    <span class="va">URL=</span><span class="st">&quot;pexpect+</span><span class="va">$1</span><span class="st">&quot;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true"></a><span class="kw">else</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true"></a>    <span class="bu">echo</span> <span class="st">&quot;Unknown URL, use scp:// or file://&quot;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true"></a>    <span class="bu">exit</span> 1</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true"></a><span class="kw">fi</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true"></a><span class="kw">if [[</span> <span class="ot">-n</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span><span class="kw"> ]]</span>; <span class="kw">then</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true"></a>    <span class="ex">duplicity</span> <span class="va">$ARGS</span> --exclude-filelist /home/kaan/.config/duplicity-files /home/kaan <span class="st">&quot;</span><span class="va">$URL</span><span class="st">/backup&quot;</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true"></a><span class="kw">else</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true"></a>    <span class="bu">echo</span> <span class="st">&quot;Please specify a location to backup into.&quot;</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true"></a>    <span class="bu">exit</span> 1</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true"></a><span class="kw">fi</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="va">$(</span><span class="fu">id</span> <span class="at">-u</span><span class="va">)</span> <span class="ot">!=</span> <span class="st">&quot;0&quot;</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">read</span> <span class="at">-p</span> <span class="st">&quot;Backup should be run as root! Continue? [y/N]&quot;</span> <span class="va">yn</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="va">$yn</span> <span class="kw">in</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        [Yy]<span class="pp">*</span><span class="kw">)</span> <span class="bu">break</span><span class="cf">;;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="pp">*</span><span class="kw">)</span> <span class="bu">exit</span><span class="cf">;;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">esac</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="va">$1</span> <span class="ot">=</span> file://<span class="pp">*</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Doing local backup.&quot;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="va">ARGS=</span><span class="st">&quot;--no-encryption&quot;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">[[</span> <span class="va">$1</span> <span class="ot">=</span> file:///<span class="pp">*</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">URL=$1</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;Use absolute paths for backup.&quot;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">exit</span> 1</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> <span class="kw">[[</span> <span class="va">$1</span> <span class="ot">=</span> scp<span class="pp">*</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Doing SSH backup.&quot;</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="va">ARGS=</span><span class="st">&quot;--ssh-askpass&quot;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="va">URL=</span><span class="st">&quot;pexpect+</span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Unknown URL, use scp:// or file://&quot;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="ot">-n</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="ex">duplicity</span> <span class="va">$ARGS</span> <span class="at">--exclude-filelist</span> /home/kaan/.config/duplicity-files /home/kaan <span class="st">&quot;</span><span class="va">$URL</span><span class="st">/backup&quot;</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Please specify a location to backup into.&quot;</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
 </div></html>

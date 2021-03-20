@@ -25,10 +25,12 @@
    [:div.affiliation "The Ohio State University"]
    [:span [:a.email {:href "mailto:genc.5@osu.edu"} "genc.5@osu.edu"] [:a.gpg {:href "/extra/kaangenc.gpg"} "GPG key"]]
    [:a.github {:href "https://github.com/SeriousBug"} "Github"]
-   [:a.github {:href "https://twitter.com/KaanGencCS"} "Twitter"]
-   [:a.researchr {:href "https://conf.researchr.org/profile/kaangenc"} "Researchr"]
+   [:a.linkedin {:href "https://www.linkedin.com/in/kaan-genc-8489b9205/"} "LinkedIn"]
    [:a.cv {:href "/extra/cv.pdf"} "CV"]
-   [:a.blog {:href "/blog/"} "Blog"]])
+   [:a.blog {:href "/blog/"} "Blog"]
+   [:a.twitter {:href "https://twitter.com/KaanGencCS"} "Twitter"]
+   [:a.researchr {:href "https://conf.researchr.org/profile/kaangenc"} "Researchr"]])
+
 
 
 
