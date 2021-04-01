@@ -56,19 +56,6 @@ corresponding implementation for one of my publications listed below.
 [Github](https://github.com/PLaSSticity/Crafty)
 </div>
 
-<div class="publication">
-## Crafty
-
-A transactional persistent memory library, written in C. Provides transactional
-data storage capabilities to programs by utilizing existing hardware
-transactional memory support of processors, combined with the new non-volatile
-memory hardware. Allows programs to store and access data efficiently, and
-without the need for additional concurrency synchronization. This is the
-corresponding implementation for the publication of the same name listed below.
-
-[Github](https://github.com/PLaSSticity/Crafty)
-</div>
-
 
 <div class="publication">
 ## SDP & WDP data race detectors
