@@ -23,6 +23,10 @@
    [:div.title "PhD Student"]
    [:div.department "Computer Science & Engineering"]
    [:div.affiliation "The Ohio State University"]
+   [:div.spacer]
+   [:div.title "Software Engineering Intern"]
+   [:div.affiliation [:a {:href "http://dendron.so/"} "Dendron"]]
+   [:div.spacer]
    [:span [:a.email {:href "mailto:genc.5@osu.edu"} "genc.5@osu.edu"] [:a.gpg {:href "/extra/kaangenc.gpg"} "GPG key"]]
    [:a.github {:href "https://github.com/SeriousBug"} "Github"]
    [:a.linkedin {:href "https://www.linkedin.com/in/kaan-genc-8489b9205/"} "LinkedIn"]
@@ -30,6 +34,7 @@
    [:a.blog {:href "/blog/"} "Blog"]
    [:a.twitter {:href "https://twitter.com/KaanGencCS"} "Twitter"]
    [:a.researchr {:href "https://conf.researchr.org/profile/kaangenc"} "Researchr"]])
+
 
 
 
@@ -57,4 +62,4 @@
    (into [:div.main.column [:h1 "My thoughts on software & computer science"]]
          (map (fn [{:keys [title permalink ttr date] :as post}]
                 [:a.post-listing {:href permalink} [:span.title title] [:br] [:span.ttr ttr " minute read, "] [:span.date (format-time date)]])
-            posts))))
+              posts))))

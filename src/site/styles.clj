@@ -66,4 +66,5 @@
   ;; Create a separator between publications with the border
   [".publication:not(:last-child)" {:border-bottom "1px solid black"}]
   ;;
-  [:.conf {:font-size "14px" :color "rgba(0, 0, 0, 0.70)"}])
+  [:.conf {:font-size "14px" :color "rgba(0, 0, 0, 0.70)"}]
+  [:.spacer {:height "2rem"}])
